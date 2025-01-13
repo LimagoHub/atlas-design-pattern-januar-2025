@@ -1,22 +1,23 @@
 #include <iostream>
 #include <chrono>
 #include "client/Client.h"
-#include "math/CalculatorImpl.h"
-#include "math/CalculatorLogger.h"
-#include "math/CalculatorSecure.h"
+
+#include "math/CalculatorFactory.h"
+
+using Calc_Pointer = std::unique_ptr<math::Calculator>;
+
 int main() {
 
-    math::CalculatorImpl impl;
-    math::CalculatorLogger logger{impl};
-    math::CalculatorSecure secure{logger};
-    client::Client client{secure};
+    math::CalculatorFactory::setLogger(true);
+    math::CalculatorFactory::setSecure(true);
+    math::CalculatorFactory::setBenchmark(true);
+
+    auto calculator = math::CalculatorFactory::create();
+    client::Client client{calculator};
 
     client.go();
 
-    auto start_ = std::chrono::high_resolution_clock::now();
-    auto end_ = std::chrono::high_resolution_clock::now();
 
-    std::cout << "Duration: " << std::chrono::duration_cast<std::chrono::milliseconds>(end_-start_).count() << std::endl;
 
     return 0;
 }

@@ -5,6 +5,7 @@
 #pragma once
 
 #include <iostream>
+#include <memory>
 #include "../math/Calculator.h"
 
 
@@ -12,14 +13,14 @@ namespace client {
 
     class Client {
 
-        math::Calculator &calculator_;
+        std::unique_ptr<math::Calculator> calculator_;
 
     public:
 
-        explicit Client(math::Calculator &calculator) : calculator_(calculator) {}
+        explicit Client(std::unique_ptr<math::Calculator> &calculator) : calculator_(std::move(calculator)) {}
 
         void go() {
-            std::cout << calculator_.add(2,3) <<std:: endl;
+            std::cout << calculator_->add(2,3) <<std:: endl;
         }
 
 
