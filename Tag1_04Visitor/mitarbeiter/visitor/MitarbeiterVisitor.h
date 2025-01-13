@@ -1,5 +1,5 @@
 //
-// Created by JoachimWagner on 13.01.2025.
+// Created by JoachimWagner on 28.10.2024.
 //
 
 #pragma once
@@ -11,12 +11,12 @@ namespace mitarbeiter::visitor {
 
     class MitarbeiterVisitor {
     public:
-        MitarbeiterVisitor() = default;
-        virtual ~MitarbeiterVisitor()=default;
-
+        virtual void init() = 0;
+        virtual ~MitarbeiterVisitor() = default;
         virtual void visit(mitarbeiter::LohnEmpfaenger &lohn_empfaenger) = 0;
 
         virtual void visit(mitarbeiter::GehaltsEmpfaenger &gehalts_empfaenger) = 0;
+        virtual void dispose() = 0;
     };
 
 } // visitor
