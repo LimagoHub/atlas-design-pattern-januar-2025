@@ -8,6 +8,7 @@
 #include <string>
 #include <ostream>
 #include <functional>
+#include "../propertychange/PropertyChangedEvent.h"
 
 #include "Tier.h"
 
@@ -16,13 +17,16 @@ class Schwein : public Tier{  // Observable
 
     inline static const unsigned MAX_WEIGHT{ 20};
     std::vector<std::function<void(Schwein*)>> listeners;
+    std::vector<std::function<void(const PropertyChangedEvent<Schwein> &event)>> propertyChangedEventListeners;
 
     std::string name;
-    int gewicht;
+    unsigned gewicht;
 
-    inline void setGewicht(int gewicht) {
+    inline void setGewicht(unsigned gewicht) {
+        PropertyChangedEvent<Schwein> event{this,"gewicht",Schwein::gewicht, gewicht};
         Schwein::gewicht = gewicht;
         if(gewicht > MAX_WEIGHT) firePigTooFatEvent();
+        firePropertyChangedEvent(event);
     }
 
     void firePigTooFatEvent(){
@@ -30,22 +34,39 @@ class Schwein : public Tier{  // Observable
             listener(this);
         }
     }
+
+    void firePropertyChangedEvent(const PropertyChangedEvent<Schwein> &event){
+        for (const auto & listener:propertyChangedEventListeners) {
+            listener(event);
+        }
+    }
 public:
     explicit Schwein(const std::string &name) : name(name), gewicht(10) {}
+
+
 
     void addPigTooFatListener(const std::function<void(Schwein*)> &listener) {
         listeners.emplace_back(listener);
     }
+
+
+    void addPropertyChangedEventListener(const std::function<void(const PropertyChangedEvent<Schwein>)> &listener) {
+        propertyChangedEventListeners.emplace_back(listener);
+    }
+
 
     const std::string &getName() const {
         return name;
     }
 
     void setName(const std::string &name) {
+        PropertyChangedEvent<Schwein> event{this,"name",Schwein::name, name};
+
         Schwein::name = name;
+        firePropertyChangedEvent(event);
     }
 
-    int getGewicht() const {
+    unsigned getGewicht() const {
         return gewicht;
     }
 
