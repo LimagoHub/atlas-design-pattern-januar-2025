@@ -3,10 +3,10 @@
 //
 
 #pragma once
-#include "AbstractCommand.h"
+#include "AbstractQuery.h"
 namespace command {
 
-    class PrintCommand :public AbstractCommand{
+    class PrintCommand :public AbstractQuery{
     public:
         auto execute() -> void override {
             Calc::getInstance()->print();

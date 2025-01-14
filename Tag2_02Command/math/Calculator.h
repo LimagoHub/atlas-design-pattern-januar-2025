@@ -1,22 +1,34 @@
 //
-// Created by JoachimWagner on 14.01.2025.
+// Created by JoachimWagner on 29.10.2024.
 //
 
 #pragma once
-
 #include <memory>
 #include <iostream>
+#include "CalculatorMemento.h"
 
 namespace math {
 
     class Calculator {
-          Calculator() {}
 
-          double memory{0};
-       
-          void setMemory(double memory) { // Bloede Funktion, soll spaeter weg
+
+        class ConcreteCalculatorMemento : public CalculatorMemento {
+            const double memory;
+        public:
+            explicit ConcreteCalculatorMemento(const double memory) : memory(memory) {}
+
+            [[nodiscard]] auto getMemory() const ->double {
+                return memory;
+            }
+        };
+        double memory{0};
+
+        Calculator() {}
+
+
+        void setMemory(double memory) {
             Calculator::memory = memory;
-          }
+        }
     public:
         [[nodiscard]] static auto getInstance()->std::shared_ptr<Calculator>  {
             static std::shared_ptr<Calculator> instance{new Calculator{}};
@@ -24,10 +36,19 @@ namespace math {
             return instance;
         }
 
+        auto setMemento(const std::shared_ptr<CalculatorMemento> &calculatorMemento) -> void {
+            auto memento = static_cast<ConcreteCalculatorMemento*>(calculatorMemento.get());
+
+            Calculator::memory = memento->getMemory();
+        }
+
+        [[nodiscard]] auto getMemento()->std::shared_ptr<CalculatorMemento> {
+            return std::make_shared<ConcreteCalculatorMemento>(Calculator::memory);
+        }
+
         double getMemory() const {
             return memory;
         }
-
 
         auto print() const->void{
             std::cout << memory << std::endl;
@@ -48,7 +69,6 @@ namespace math {
         auto div(double value)-> void {
             memory /= value;
         }
-
     };
 
 } // math

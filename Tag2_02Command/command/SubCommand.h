@@ -7,13 +7,13 @@
 
 #include "../math/Calculator.h"
 
-#include "AbstractCommand.h"
+#include "AbstractQuery.h"
 
 using Calc=math::Calculator;
 
 namespace command {
 
-    class SubCommand : public AbstractCommand {
+    class SubCommand : public AbstractQuery {
         double value{0};
     public:
         SubCommand()=default;

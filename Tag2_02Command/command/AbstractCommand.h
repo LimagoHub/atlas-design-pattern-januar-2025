@@ -3,30 +3,47 @@
 //
 
 #pragma once
-#include "Command.h"
+#include "AbstractCommand.h"
 
 #include "../math/Calculator.h"
-#include <stdexcept>
+#include "../math/CalculatorMemento.h"
+#include "Command.h"
+
 using Calc=math::Calculator;
+using CalcMementoPointer=std::shared_ptr<math::CalculatorMemento>;
 namespace command {
 
-    class AbstractCommand:public Command {
 
-    public:
-        auto parse(const StringVector &tokens) -> void override {
-            // Ok
-        }
+        class AbstractCommand:public Command {
+            CalcMementoPointer memento;
+
+        public:
+            AbstractCommand()=default;
+            ~AbstractCommand() override = default;
+
+            auto parse(const StringVector &tokens)->void override {
+                // Ok
+            }
+
+            auto undo() -> void override {
+                Calc ::getInstance()->setMemento(memento);
+            }
+
+            auto isQuery()->bool final {
+                return false;
+            }
 
 
 
-        auto undo() -> void override {
-           throw std::logic_error{"Upps"};
+            auto execute()->void final  {
+                memento = Calc ::getInstance()->getMemento();
+                doAction();
+            }
+        protected:
+            virtual void doAction() = 0;
 
-        }
+        };
 
-        auto isQuery() -> bool override {
-            return true;
-        }
-    };
+
 
 } // command
