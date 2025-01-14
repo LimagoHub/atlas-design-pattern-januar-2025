@@ -8,4 +8,5 @@ add_executable(Tag2_02Command main.cpp
         math/Calculator.h
         command/CommandFactory.h
         command/AddCommand.h
-        command/PrintCommand.h)
+        command/PrintCommand.h
+        command/CommandHistory.h)
