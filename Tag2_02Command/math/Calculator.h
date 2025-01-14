@@ -13,6 +13,10 @@ namespace math {
           Calculator() {}
 
           double memory{0};
+       
+          void setMemory(double memory) { // Bloede Funktion, soll spaeter weg
+            Calculator::memory = memory;
+          }
     public:
         [[nodiscard]] static auto getInstance()->std::shared_ptr<Calculator>  {
             static std::shared_ptr<Calculator> instance{new Calculator{}};
@@ -24,9 +28,7 @@ namespace math {
             return memory;
         }
 
-        void setMemory(double memory) { // Bloede Funktion, soll spaeter weg
-            Calculator::memory = memory;
-        }
+
         auto print() const->void{
             std::cout << memory << std::endl;
         }
