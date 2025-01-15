@@ -38,6 +38,8 @@ int main() {
 
     travers(root);
 
+    //root.print();
+
     return 0;
 }
 
