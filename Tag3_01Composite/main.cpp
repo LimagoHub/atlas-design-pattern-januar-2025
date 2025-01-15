@@ -36,9 +36,16 @@ int main() {
     e2->append(e2_1);
     e2->append(e2_2);
 
-    travers(root);
+    //travers(root);
 
-    //root.print();
+    root->ausgabe();
+
+
+   e3.iterate(v);
+
+   for(auto item :e3) {
+
+   }
 
     return 0;
 }

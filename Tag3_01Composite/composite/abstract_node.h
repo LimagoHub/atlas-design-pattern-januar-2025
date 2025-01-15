@@ -51,6 +51,13 @@ namespace composite {
             os << std::string{"name: "} << this->get_name();
         }
 
+        auto ausgabe() const ->void  {
+            std::cout << *this << std::endl;
+            for(auto  child : get_children()) {
+                child->ausgabe();
+            }
+        }
+
         friend auto operator<<(std::ostream &os, const abstract_node &node)-> std::ostream & {
             node.print(os);
             return os;
